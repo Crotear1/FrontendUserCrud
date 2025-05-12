@@ -1,0 +1,71 @@
+// Pages/UsersList.razor
+@page "/userslist"
+@inject UserApiService ApiService
+@using TestCrudUser.Models
+@using TestCrudUser.Services
+
+<PageTitle>User List</PageTitle>
+
+<h1>User List from Database</h1>
+
+<p>This component demonstrates fetching user data from a backend API.</p>
+
+@if (users == null && !loadFailed)
+{
+    <p><em>Loading...</em></p>
+}
+else if (loadFailed)
+{
+    <p><em style="color: red;">Failed to load users. Check console for errors. API URL might be incorrect or API not running.</em></p>
+    <p><em>Current API Base URL used (approx): </em></p>
+}
+else if (users != null && !users.Any())
+{
+    <p><em>No users found.</em></p>
+}
+else if (users != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Username</td>
+                    <td>@user.Email</td>
+                    <td>@user.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<User>? users;
+    private bool loadFailed = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            users = await ApiService.GetUsersAsync();
+            if (users == null)
+            {
+                loadFailed = true; // explizit setzen, wenn GetUsersAsync null zurückgibt (z.B. bei Fehler)
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading users in component: {ex.Message}");
+            loadFailed = true;
+        }
+    }
+}
