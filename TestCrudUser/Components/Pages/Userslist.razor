@@ -59,7 +59,7 @@ else if (users != null)
             users = await ApiService.GetUsersAsync();
             if (users == null)
             {
-                loadFailed = true; // explizit setzen, wenn GetUsersAsync null zurückgibt (z.B. bei Fehler)
+                loadFailed = true;
             }
         }
         catch (Exception ex)

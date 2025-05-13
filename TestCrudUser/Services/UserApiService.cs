@@ -9,11 +9,6 @@ namespace TestCrudUser.Services
     public class UserApiService
     {
         private readonly HttpClient _httpClient;
-        // Basis-URL deiner API. Passe den Port an!
-        // Für Android Emulator: "http://10.0.2.2:<PORT>" oder "https://10.0.2.2:<PORT>"
-        // Für Windows mit WSL/Android Subsystem: IP-Adresse deines PCs im Netzwerk
-        // Für iOS Simulator (auf Mac, API läuft auch auf Mac): "https://localhost:<PORT>"
-        // Für physische Geräte: IP-Adresse deines PCs im lokalen Netzwerk.
         private string _baseApiUrl = GetApiBaseUrl();
 
         public UserApiService(HttpClient httpClient)
@@ -56,20 +51,16 @@ namespace TestCrudUser.Services
             try
             {
                 var response = await _httpClient.GetAsync($"{_baseApiUrl}/api/users");
-                response.EnsureSuccessStatusCode(); // Löst eine Ausnahme aus, wenn der HTTP-Statuscode keinen Erfolg anzeigt
+                response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<List<User>>();
             }
             catch (HttpRequestException ex)
             {
-                // Logge den Fehler oder zeige eine Meldung an
                 Console.WriteLine($"Error fetching users: {ex.Message}");
                 if (ex.InnerException != null)
                 {
                     Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
                 }
-                // Für Android/iOS kann es sein, dass Cleartext-HTTP blockiert wird oder SSL-Zertifikate nicht vertrauenswürdig sind.
-                // Stelle sicher, dass deine API über HTTPS mit einem gültigen (Entwickler-)Zertifikat läuft.
-                // Oder konfiguriere die Plattform für Cleartext (siehe unten, falls HTTPS nicht sofort klappt).
                 return null;
             }
             catch (Exception ex)
