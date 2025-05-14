@@ -1,0 +1,70 @@
+/* Components/StationDisplay.razor.css */
+
+.station-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+    border: 1px solid #cccccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.station-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+
+.radial-bar-container {
+    position: relative;
+    width: 150px; 
+    height: 150px;
+    margin-bottom: 5px; 
+}
+
+.segment-labels {
+    font-size: 0.8em;
+    color: #555;
+    margin-top: 5px; 
+    text-align: center; 
+}
+
+    .segment-labels div {
+        justify-content: center; 
+    }
+
+.input-fields {
+    display: flex;
+    flex-direction: column; /* Eingabegruppen untereinander */
+    gap: 12px; /* Abstand zwischen den Eingabegruppen */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column; /* Label über dem Input-Feld */
+}
+
+    .input-group label {
+        margin-bottom: 5px;
+        font-size: 0.9em;
+        color: #555555;
+    }
+
+    .input-group input[type="text"] {
+        padding: 10px;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        width: 200px; /* Breite der Eingabefelder anpassen */
+        font-size: 0.9em;
+    }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }

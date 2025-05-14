@@ -1,0 +1,71 @@
+@page "/stationsuebersicht"
+@using TestCrudUser.Data
+@using TestCrudUser.Components
+
+<PageTitle>Stationsübersicht</PageTitle>
+
+<h1>Stationsübersicht</h1>
+
+@if (stationen == null || !stationen.Any())
+{
+    <p><em>Lade Stationsdaten...</em></p>
+}
+else
+{
+    <div class="stations-list">
+        @foreach (var station in stationen)
+        {
+            <StationDisplay Station="station" />
+        }
+    </div>
+}
+
+@code {
+    private List<StationData> stationen = new List<StationData>();
+
+    protected override void OnInitialized()
+    {
+        LoadStations();
+    }
+
+    private void LoadStations()
+    {
+        stationen = new List<StationData>
+        {
+            new StationData {
+                Id = 1, Name = "Alpha",
+                RadialSegments = new List<RadialBarSegment> {
+                    new RadialBarSegment { Value = 75, Color = "#007bff", Label = "CPU" },
+                    new RadialBarSegment { Value = 50, Color = "#28a745", Label = "RAM" },
+                    new RadialBarSegment { Value = 30, Color = "#ffc107", Label = "Disk" }
+                },
+                InputValue1 = "A-W1", InputValue2 = "A-W2", InputValue3 = "A-W3"
+            },
+            new StationData {
+                Id = 2, Name = "Beta",
+                RadialSegments = new List<RadialBarSegment> {
+                    new RadialBarSegment { Value = 90, Color = "#dc3545" },
+                    new RadialBarSegment { Value = 60, Color = "#17a2b8", Label = "Netzwerk" }
+                },
+                InputValue1 = "B-W1", InputValue2 = "B-W2", InputValue3 = "B-W3"
+            },
+            new StationData {
+                Id = 3, Name = "Gamma",
+                RadialSegments = new List<RadialBarSegment> {
+                    new RadialBarSegment { Value = 40, Color = "#fd7e14", Label = "Sensor 1" },
+                    new RadialBarSegment { Value = 65, Color = "#6f42c1", Label = "Sensor 2" },
+                    new RadialBarSegment { Value = 85, Color = "#e83e8c", Label = "Sensor 3" },
+                    new RadialBarSegment { Value = 20, Color = "#20c997", Label = "Sensor 4" }
+                },
+                InputValue1 = "C-W1", InputValue2 = "C-W2", InputValue3 = "C-W3"
+            },
+            new StationData { Id = 4, Name = "Delta", RadialSegments = new List<RadialBarSegment>(), InputValue1 = "D-W1" },
+            new StationData { Id = 5, Name = "Epsilon", RadialSegments = new List<RadialBarSegment> { new RadialBarSegment { Value = 88, Color="#6610f2" } }, InputValue1 = "E-W1" },
+             new StationData { Id = 6, Name = "Zeta", RadialSegments = new List<RadialBarSegment> { new RadialBarSegment { Value = 70, Color = "#007bff", Label="Last"}, new RadialBarSegment { Value = 45, Color = "#28a745", Label="Temp"} }, InputValue1 = "Z-W1"},
+            new StationData { Id = 7, Name = "Eta", RadialSegments = new List<RadialBarSegment> { new RadialBarSegment { Value = 92, Color = "#ffc107", Label="Druck"} }, InputValue1 = "H-W1"},
+            new StationData { Id = 8, Name = "Theta", RadialSegments = new List<RadialBarSegment> { new RadialBarSegment { Value = 50, Color = "#dc3545", Label="V1"}, new RadialBarSegment { Value = 60, Color = "#17a2b8", Label="V2"}, new RadialBarSegment { Value = 70, Color = "#fd7e14", Label="V3"} }, InputValue1 = "T-W1"},
+            new StationData { Id = 9, Name = "Iota", RadialSegments = new List<RadialBarSegment>(), InputValue1 = "I-W1"},
+            new StationData { Id = 10, Name = "Kappa", RadialSegments = new List<RadialBarSegment> { new RadialBarSegment { Value = 80, Color = "#6f42c1"} }, InputValue1 = "K-W1"}
+        };
+    }
+}

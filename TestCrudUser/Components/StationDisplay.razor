@@ -1,0 +1,79 @@
+@using TestCrudUser.Data
+@using System.Linq
+
+<div class="station-container">
+    <div class="station-info">
+        <h4>@Station.Name (ID: @Station.Id)</h4>
+        <div class="radial-bar-container">
+            @{
+
+                int svgSize = 150; 
+                int viewBoxCenter = svgSize / 2;
+                double initialOuterRadius = (svgSize * 0.4); 
+                double strokeWidth = 8;  
+                double gapBetweenRings = 3; 
+            }
+            <svg width="@svgSize" height="@svgSize" viewBox="0 0 @svgSize @svgSize">
+                @if (Station.RadialSegments != null)
+                {
+                    @foreach (var item in Station.RadialSegments.Select((segment, index) => new { segment, index }))
+                    {
+                        var currentRadius = initialOuterRadius - (item.index * (strokeWidth + gapBetweenRings));
+                        if (currentRadius <= strokeWidth / 2) continue;
+
+                        var circumference = 2 * Math.PI * currentRadius;
+                        var offset = ((100 - item.segment.Value) / 100) * circumference;
+                        var segmentColor = string.IsNullOrEmpty(item.segment.Color) ? "#007bff" : item.segment.Color;
+
+                        <circle cx="@viewBoxCenter" cy="@viewBoxCenter" r="@currentRadius"
+                                fill="transparent" stroke="#e0e0e0" stroke-width="@strokeWidth" />
+                        <circle cx="@viewBoxCenter" cy="@viewBoxCenter" r="@currentRadius"
+                                fill="transparent" stroke="@segmentColor" stroke-width="@strokeWidth"
+                                stroke-dasharray="@circumference"
+                                stroke-dashoffset="@offset"
+                                transform="rotate(-90 @viewBoxCenter @viewBoxCenter)" />
+                    }
+                }
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="14px" fill="#333">
+                    @Station.Name
+                </text>
+            </svg>
+        </div>
+        @* Optional: Anzeige der Labels der Segmente unter oder neben dem Chart *@
+        @if (Station.RadialSegments != null && Station.RadialSegments.Any(s => !string.IsNullOrEmpty(s.Label)))
+        {
+            <div class="segment-labels">
+                @foreach (var segment in Station.RadialSegments.Where(s => !string.IsNullOrEmpty(s.Label)))
+                {
+                    <div style="display: flex; align-items: center; font-size: 0.8em; margin-top: 2px;">
+                        <span style="height: 10px; width: 10px; background-color: @segment.Color; margin-right: 5px; border-radius: 2px;"></span>
+                        @segment.Label: @segment.Value.ToString("F0")%
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="input-fields">
+        <div class="input-group">
+            <label for="input1-@Station.Id">Eingabe 1:</label>
+            <input type="text" id="input1-@Station.Id" @bind="Station.InputValue1" placeholder="Wert 1" />
+            <button>Speichern</button>
+        </div>
+        <div class="input-group">
+            <label for="input2-@Station.Id">Eingabe 2:</label>
+            <input type="text" id="input2-@Station.Id" @bind="Station.InputValue2" placeholder="Wert 2" />
+            <button>Speichern</button>
+        </div>
+        <div class="input-group">
+            <label for="input3-@Station.Id">Eingabe 3:</label>
+            <input type="text" id="input3-@Station.Id" @bind="Station.InputValue3" placeholder="Wert 3" />
+            <button>Speichern</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public StationData Station { get; set; } = new StationData();
+
+}
